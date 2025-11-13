@@ -4,6 +4,12 @@ const timer = document.querySelector('#pomodoro-time');
 let time = 1500;
 let timerId = null;
 
+function clearTimer() {
+  clearInterval(timerId);
+  timerId = null;
+  startBtn.textContent = "start";
+}
+
 function updateTimer() {
   let minutes = Math.floor(time / 60);
   let seconds = time % 60;
@@ -15,23 +21,19 @@ function updateTimer() {
 }
 
 startBtn.addEventListener('click', function () {
-  if (timerId === null) {
+  if (!timerId) {
     startBtn.textContent = "stop";
     timerId = setInterval(() => {
-      time --;
+      time--;
       updateTimer();
 
-      if(time < 0) {
-        clearInterval(timerId);
-        timerId = null;
-        startBtn.textContent = "start";
+      if (time < 0) {
+        clearTimer();
         timer.innerHTML = "25:00";
         time = 1500;
       }
     }, 200)
   } else {
-    clearInterval(timerId);
-    timerId = null;
-    startBtn.textContent = "start";
+    clearTimer();
   }
 })
